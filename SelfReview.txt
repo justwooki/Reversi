@@ -1,0 +1,10 @@
+# Self Review
+
+We could have abstracted the game board instead of directly changing the game board to support
+different kinds of game boards. We could have used the decorator patter as well in our view to add
+different types of functionalities for what our view displayed on its panel. The providers code gave
+us the idea to abstract the game board would be a good design decision. The customers did not
+request anything from us, therefore we did not need to update our code for them.
+
+We had a pleasant experience working with our providers. They were prompt and happy to help when we
+had questions/concerns.

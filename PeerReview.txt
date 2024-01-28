@@ -1,0 +1,77 @@
+# Peer Review for Nadeem Baba and Joseph George
+
+## Design critique:
+The provided design overall was neat and organized. Most of the provided interfaces weren't
+particularly lacking in any necessary methods. There were, of course, a few instances in which we
+did in fact question the design. The biggest design flaw we identified was the features interfaces.
+ModelFeatures is supposed to represent a model listener for any observer who wishes to be notified
+by specific events occurring in the model. The observer in this case should be the controller,
+which should implement ModelFeatures, so the fact that ModelFeatures was part of the actual model
+itself left us confused. As for ControllerFeatures, it was unclear what this interface actually
+achieved and how it fit into the design of this project.
+
+
+## Implementation critique:
+The provided implementation overall was clear and well-organized. The code structure made it easy
+to understand the intended functionality, as the logic and purpose of the code were easily
+discernible. There were however, a few bugs and missing functionality. A bug was discovered in
+HexagonalStrategyMostPointsGreedy, in which the score of the wrong player was stored. This resulted
+in a complete crash of the program, as it sometimes prohibited the strategy from picking a move at
+all when prompted. Another bug was found in the view in which selecting a specific tile may at
+times cause the wrong tile to be highlighted. This bug happens to occur more frequently on smaller
+game boards. Missing functionality includes the absence of any game status (i.e. current score,
+whose turn it is, when the game is over, winner, etc.) and the ability to dynamically resize the
+board as the window screen changed.
+
+
+## Documentation critique:
+The README file was missing some key information necessary to rework the code. For example, we had
+a difficult time understanding the coordinate system and would have preferred to have a more
+in-depth explanation, such as understanding what the corner coordinates were, which coordinate was
+the center, etc. JavaDoc is sufficient but a bit unclear at times as it wasn't informative enough.
+For example, it would have been helpful if the JavaDoc for getBoardSize was more descriptive—
+What is board size: radius, diameter, number of tiles, side length, etc. For certain lines of code,
+comments would have been helpful for understanding the logic behind certain implementations.
+
+
+## Design/code limitations and suggestions on how to address them:
+Design/code limitations have been formatted in organized bullet points for ease of readability:
+    -   To properly implement the observer pattern such that the controller can listen for model
+        events while the model notifies each controller, we would recommend that ModelFeatures
+        should be implemented by the controller rather than be a part of model itself. The model
+        may store a model feature as a variable and call the feature's methods to notify the model
+        listener that a certain event has occurred. The model listener (a.k.a. the controller in
+        this instance) may decide how to react when it has been notified.
+
+    -   We aren't quite sure what purpose ControllerFeatures serves nor how it fits into the
+        observer pattern (we assume it has something to do with the observer pattern since the use
+        of a features interface usually ties in closely with the observer pattern). We would advise
+        more documentation be provided regarding what role ControllerFeatures plays.
+
+    -   There is a bug in one of the provided strategy classes, HexagonalStrategyMostPointsGreedy,
+        as described above in the implementation critique. Its exact location can be found in the
+        coordToPlaceDiscAtForMostPoints() private helper method, in which an attempt is made to
+        store the new score of the "current player" after they have made a move. However, because
+        the turn is automatically updated after a move is made, you are storing the score for the
+        wrong player. A simple fix would to change which player's score is being stored.
+
+    -   There is a bug in the view in which selecting a specific tile may at times cause the wrong
+        tile to be highlighted as described above in the implementation critique. While we aren't
+        100% certain where exactly this bug occurs, we imagine it's somewhere in the HexagonsPanel
+        class and likely has something to do with calculations that translate/converts the
+        coordinate where the mouse click event occurs to the actual hexagon tile that is to be
+        selected.
+
+    -   The current view does not currently offer the ability to display the current game status,
+        which is something we would recommend be implemented. It would be helpful for players to
+        know at the minimum when it is their turn or when the game is over. Other details such as
+        knowing the current score and the winner after the game is over would be helpful, too.
+
+    -   The current view does not currently center the board properly in the middle of the screen.
+        This shows when the user might try to resize the window. When resizing the window, the
+        board will not adjust its size to fit the window. This will result in either a rather
+        awkward view if the user increases the window size, or a detrimentally partly-playable to
+        non-playable board if the user tries to decrease the window size, which results in the
+        board being partly visible or not visible at all depending on how much the window size is
+        decreased. We would recommend that changes be made in the view to accommodate for a board
+        that properly fits in the window panel relative to its dimensions.
